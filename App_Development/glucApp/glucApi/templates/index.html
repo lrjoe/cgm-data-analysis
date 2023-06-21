@@ -1,0 +1,333 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
+  <head>
+    <title>DiaBeatIt!</title>
+  </head>
+  
+  <style>
+    .titleFont {
+      font-family: Georgia, 'Times New Roman', Times, serif ;
+    }
+
+    .mainGreen {
+      color: #458636;      
+    }
+
+    .yellowText {
+      color: #c49936;
+    }
+    
+    .backgroundGreen {
+      background-color: #dcf2e1;
+    }
+    
+    .underlineText {
+      text-underline-position: under !important;
+    }
+
+    .diaImg {
+      height: 110px;
+      width: auto;
+    }
+
+    .noBorder {
+      border: none !important;
+    }
+
+    
+    .borderGreen {
+      border-color: #458636 !important; 
+      border-width: 5px !important;
+    }
+    
+    .blackLine {
+      background: darkgrey;
+      height: 1px;
+    }
+
+    .smallFont {
+      font-size: .8em;
+    }
+
+    .spin {
+        display: inline-block;
+        width: 65px;
+        height: 65px;
+        border: 6px solid rgba(255, 255, 255, .3);
+        border-radius: 50%;
+        border-top-color: #458636;
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+      @-webkit-keyframes spin {
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      .hrSpecial {
+        border: none;
+        height: 1px;
+        /* Set the hr color */
+        color: #333;  /* old IE */
+        background-color: #333;  /* Modern Browsers */
+      }
+
+  </style>
+
+<body>
+
+    <div class="container mt-5">
+      <div class="row d-flex align-items-center">
+        <div class="col-lg-2 col-sm-3 text-center">
+          <!-- <img alt="DiabeatIt logo"/> -->
+          <img class="diaImg" src="/glucApp/static/diabeatit_green.jpeg" alt="DiabeatIt logo"/>
+        </div>
+        <div class="col-lg-10 col-sm-9">
+          <div class='h1 mainGreen titleFont text-center'><strong>Welcome back to DiabeatIt!</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-2 topText ml-4 mr-4 text-center">
+      Prepare for the day with insights into how your glucose fluctuation levels have changed from yesterday. 
+      DiabeatIt understands how your glucose fluctuation levels can affect your day-to-day life. We 
+      want to equipt you with knowledge on how different your glucose levels are from yesterday! Sign 
+      in and take control of your day! 
+    </div>
+
+    <div class="container mt-3 formInfo">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="patientId">Patient ID Number</label>
+                <input type="number" class="form-control" id="patientId">
+              </div>
+            </div>            
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="patientPassword">Password</label>
+                <input type="password" class="form-control" id="patientPassword">
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="float-right">
+                <div class="btn btn-primary btn-sm" id="submitForm">Submit</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <div class="text-center mt-4" id="spinSection">
+      <h5>Retrieving your prediction</h5>
+    </div>
+    <div class="d-flex justify-content-center">
+      <div class="text-center spin mt-3"></div>
+    </div>
+
+    <div class="container mt-2 outerREsults">
+      <div class="row d-flex justify-content-center">
+        <div class="card col-lg-4 border-0">
+          <div class="card-body pt-4">        
+            <div>
+              <div class="text-center">
+                <h4 class="lead-bold">
+                  <strong class="resultsText"></strong>
+                </h4>
+              </div>
+              <div class="mt-4 smallFont">
+                This prediction has a <span class="probabilityScore"></span> probability of occuring. Today's metrics are based on yesterday's metrics. Use the drop-down button below to view some potential causes for this increase in time out-of-range. 
+              </div>
+                <hr class="mt-2 hrSpecial"/>
+                <div>
+                  <h5 class="float-left">June 9th</h5>
+                  <span class="float-right">
+                    <span class="small">Further Insights</span>
+                    <button class="btn btn-success btn-small pt-0 pb-0 pl-1 pr-1" id="clickMore">
+                      ▼
+                    </button>
+                    <button class="btn btn-success btn-small pt-0 pb-0 pl-1 pr-1" id="unclickMore">
+                      ▲
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div id="moreDetails" class="card col-lg-7 ml-2 border-0">
+          <div class="card-body">      
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th colspan="2" class="noBorder text-center p-0"><h5>Insights</h5></th>
+                  </tr>
+                  <!-- <tr class="noBorder">
+                    <th>Reason</th>
+                    <th>Explanation</th>
+                  </tr> -->
+                </thead>
+                <tbody class="table_body">
+                 
+                </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+    <script>
+      $(document).ready(function(){
+
+        $('#moreDetails').hide()
+        $('.outerREsults').hide()
+        $('.spin').hide()
+        $('#spinSection').hide()
+        $('#unclickMore').hide()
+
+        var featDict = {
+          "Treatment_no_-1": "You have indicated that you are not on any treatments for diabetes management. This may be causing your glucose levels to be decreasing so you are spending more time within normal glucose levels.",
+          "Treatment_no_0": "You have indicated that you are not on any treatments for diabetes management. This may be causing your glucose levels to remain consistent on a day to day basis. Consider this factor if you would like to make any changes to these levels.",
+          "Treatment_no_1": "You have indicated that you are not on any treatments for diabetes management. This may be causing your glucose levels to be higher than normal for a longer amount of time on this day. Consider this factor if you would like to make any changes to these levels.",
+          "scaled_CountBelow_-1": "The amount of time you have spent below your recommended glucose levels is leading to your glucose values being more in a normal range for this day. This is one of the major factors in today’s glucose prediction. Consider this factor if you would like to keep up this trend.",
+          "scaled_CountBelow_0": "The amount of time you have spent below your recommended glucose levels is leading to your time out of range being consistent with yesterday. This is one of the major factors in today’s glucose prediction being similar to yesterday. Consider this factor if you would like to make any changes to your glucose levels.",
+          "scaled_CountBelow_1": "The amount of time you have spent below your recommended glucose levels is leading to you spending more time outside of normal range today. This is one of the major factors in today’s glucose prediction. Consider how to change this if trying to spend more time in your healthy range.",
+          "scaled_Mean_-1": "Your daily average glucose level yesterday is a major contributing factor to today’s prediction. Your mean value yesterday is attributing to you spending more time in a normal range today. Consider this factor if you would like to keep up this trend.",
+          "scaled_Mean_0": "Your daily average glucose level yesterday is a major contributing factor to today’s prediction. Your mean value yesterday is attributing to you spending the same amount of time in a normal range today, as compared with yesterday. Consider this factor if you would like to make any changes to this trend.",
+          "scaled_Mean_1": "Your daily average glucose level yesterday is a major contributing factor to today’s prediction. Your mean value yesterday is attributing to you spending more time out of normal glucose range today. Consider this factor if you would like to make any changes to this trend.",
+          "scaled_StdDev_-1": "Your difference in each glucose value from your daily average is a major contributing factor to today’s prediction. Your variation in values yesterday is attributing to you spending more time in a normal range today. Consider this factor if you would like to keep up this trend.",
+          "scaled_StdDev_0": "Your difference in each glucose value from your daily average is a major contributing factor to today’s prediction. Your variation in values yesterday is attributing to you spending the same amount of time in a normal range today. Consider this factor if you would like to make any changes to this trend.",
+          "scaled_StdDev_1": "Your difference in each glucose value from your daily average is a major contributing factor to today’s prediction. Your variation in values yesterday is attributing to you spending more time outside of a normal range today. Consider this factor if you would like to make any changes to this trend.",
+          "scaled_VarianceRatio_-1": "This factor measures the ratio of your short term variance over your long term variance. Your overall variance distribution on the day before is a major contributing factor to today’s prediction and may be causing you to spend the same amount of time in a normal range today as yesterday.",
+          "scaled_VarianceRatio_0" : "This factor measures the ratio of your short term variance over your long term variance. Your overall variance distribution on the day before is a major contributing factor to today’s prediction and may be causing you to spend the same amount of time in a normal range today as yesterday.",
+          "scaled_VarianceRatio_1" : "This factor measures the ratio of your short term variance over your long term variance. Your overall variance distribution on the day before is a major contributing factor to today’s prediction and may be causing you to spend more time outside of a normal range today than yesterday.",
+          "scaled_LongTermVariance_1" : "This factor measures the ratio of your long term variance over time. Your overall variance distribution on the day before is a major contributing factor to today’s prediction and may be causing you to spend more time outside of a normal range today than yesterday.",
+          "scaled_Max_1" : "Your daily max glucose level yesterday is a major contributing factor to today’s prediction. Your max value yesterday is attributing to you spending more time out of normal glucose range today. Consider this factor if you would like to make any changes to this trend.",
+          "scaled_CountAbove_1" : "The amount of time you have spent above your recommended glucose levels is leading to you spending more time outside of normal range today. This is one of the major factors in today’s glucose prediction. Consider how to change this if trying to spend more time in your healthy range.",
+          "scaled_Min_1" : "Your daily min glucose level yesterday is a major contributing factor to today’s prediction. Your max value yesterday is attributing to you spending more time out of normal glucose range today. Consider this factor if you would like to make any changes to this trend."
+        };
+
+        var featNames ={
+          "Treatment_no": "No Treatment",
+          "scaled_CountBelow": "Time Below Healthy Range",
+          "scaled_Mean": "Mean",
+          "scaled_StdDev": "Standard Deviation",
+          "scaled_VarianceRatio": "Variance Ratio",
+          "scaled_LongTermVariance" : "Long Term Variance",
+          "scaled_Max" : "Maximum Value",
+          "scaled_Min" : "Min Value",
+          "scaled_CountAbove" : "Time Above Healthy Range",
+        }
+        
+        $('#submitForm').on('click', function(){
+          let patientId = $('#patientId').val()
+          let patientPassword = $('#patientPassword').val()
+
+          $('.spin').show()
+          $('#spinSection').show()
+          $('.formInfo').hide()
+          $('.topText').hide()
+
+          $.ajax({
+              type: "GET",
+              url: "GetPatientInfo",
+              data: {
+                'patientId': patientId,
+                'patientPassword': patientPassword
+               },
+              contentType: "application/json",
+              dataType: 'json',
+              success: function(response){
+
+                $('.formInfo').hide()
+                $('.spin').hide()
+                $('#spinSection').hide()
+
+                if(response['prediction'] == 0)
+                {
+                    $('.resultsText').addClass('mainGreen')
+                    $('.resultsText').text('You have stable glucose levels!')
+                } 
+                else if(response['prediction'] == -1)
+                {
+                  $('.resultsText').addClass('mainGreen')
+                  $('.resultsText').text('Decreased time in unhealthy range!')
+                }
+                else if(response['prediction'] == 1)
+                {
+                  $('.resultsText').addClass('yellowText')
+                  $('.resultsText').text('Increased time in unhealthy range')
+                }
+
+                $('.probabilityScore').text(response['probability'] + '%')
+
+
+                feats = JSON.parse(response['feats'])
+
+                console.log(feats)
+
+                Object.entries(feats).forEach((key, value) => {
+
+                  dictKey = key[1] + '_' + response['prediction']
+                  
+                  description = featDict[dictKey]
+                  featName = featNames[key[1]]
+
+                  console.log('description')
+                  console.log(description)
+                  console.log('featName')
+                  console.log(featName)
+
+                  $('.table_body').append(`<tr>
+                    <td>${featName}</td>
+                    <td>${description}</td>
+                  </tr>`)
+                });
+
+                $('.outerREsults').show()                
+
+                console.log(response['success'])
+                console.log(response['probability'])
+                console.log(response['prediction'])
+                console.log(response['feats'])
+              }
+          })
+        })
+
+        $('#clickMore, #unclickMore').on('click', function(){
+          $('#moreDetails').toggle()
+          $('#clickMore').toggle()
+          $('#unclickMore').toggle()
+
+        })
+      })
+
+
+      
+
+    </script>
+
+  </body>
+</html>

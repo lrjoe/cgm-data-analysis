@@ -1,0 +1,67 @@
+Data_Storage: 
+  train_data_storage: "/cephfs/train_test_val/training_set"
+  validation_data_storage: "/cephfs/train_test_val/val_set"
+  test_data_storage: "/cephfs/train_test_val/test_set"
+  
+  inter_train_location: "/cephfs/interpolation/train"
+  inter_test_location: "/cephfs/interpolation/test"
+  inter_val_location: "/cephfs/interpolation/val"
+  
+  one_hot_encoding_location: "/cephfs/data/cohort_encoded.parquet"
+
+Create_Data: False
+
+Analysis:
+  Analysis_Group: 'PatientId'
+
+Daily_Stats_Features:
+  lower: 70
+  upper: 180
+
+Time_Series_Input_Features:
+  MFDA:
+    win_1: 10
+    win_2: 500
+    q_list_1: 1
+    q_list_2: 400
+    rev_seg: True
+    pol_order: 1
+
+
+Feature_Importance:
+    feature_importance_storage_location: "/home/jovyan/glucose-data-analysis/Output_Files/feature_importance_metrics.csv"
+    overall_feature_importance_plot_location: "/home/jovyan/glucose-data-analysis/Output_Files/overall_feature_imp.png"
+
+ML_Models:
+  model_creation: 
+    create_model: False
+    train_regression: False
+    train_classification: False
+    train_only_xgboost: False
+
+  random_seed: 42
+
+  Regression:
+    xgboost_regression_model_storage_location: '/cephfs/Saved_Models/No_Hyperparameter_Tuning/Regression/XGBoost'
+    linear_regression_model_storage_location: '/cephfs/Saved_Models/No_Hyperparameter_Tuning/Regression/Linear_Regression'
+    random_forest_regression_model_storage_location: '/cephfs/Saved_Models/No_Hyperparameter_Tuning/Regression/Random_Forest_Regression'
+    factorization_machines_regression_model_storage: '/cephfs/Saved_Models/No_Hyperparameter_Tuning/Regression/Factorization_Machines_Regression'
+    
+
+  Classification:
+    xgboost_classification_model_storage_location: '/cephfs/Saved_Models/Hyperparameter_Tuning/XGBClassification1'
+    logistic_regression_classification_model_storage_location: '/cephfs/Saved_Models/No_Hyperparameter_Tuning/Classification/Logistic_Regression'
+    random_forest_classification_model_storage_location: '/cephfs/Saved_Models/No_Hyperparameter_Tuning/Classification/Random_Forest'
+    
+    
+  Final_Classification:
+    final_xgboost_classification_model_storage_location: '/cephfs/Saved_Models/Hyperparameter_Tuning/XGBClassification1'
+
+
+Load_ML_Model:
+    final_model_load_location: '/cephfs/Saved_Models/Hyperparameter_Tuning/XGBClassification7'
+
+
+Evaluation_Metrics:
+    regression_evaluation_metrics_output_storage: "/home/jovyan/glucose-data-analysis/Output_Files/Regression/"
+    classification_evaluation_metrics_output_storage: "/home/jovyan/glucose-data-analysis/Output_Files/Classification/"
